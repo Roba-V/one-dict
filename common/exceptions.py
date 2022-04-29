@@ -1,0 +1,2 @@
+class ODLanguageError(Exception):
+    pass
