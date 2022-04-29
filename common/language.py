@@ -10,6 +10,8 @@ class Language:
     言語管理クラス。
     """
 
+    # 言語設定済みかフラグ
+    __is_configured: bool = False
     # 言語種類
     __lang: str = ''
     # メッセージ
@@ -39,6 +41,8 @@ class Language:
             # TODO: ログ処理を追加
 
             raise exception
+        else:
+            cls.__is_configured = True
 
     @classmethod
     def __read_json(cls) -> None:
@@ -61,5 +65,7 @@ class Language:
         :return:    指定されたメッセージコードに対応したメッセージテキスト
         """
 
-        # TODO: 取得失敗した場合の例外処理を追加
+        if not cls.__is_configured:
+            # 言語設定未実施の場合
+            raise ODLanguageError(cst.LANG_HAS_NOT_CONFIGURED_MSG)
         return cls.__msg.get(code, '')
