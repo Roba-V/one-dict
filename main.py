@@ -1,16 +1,11 @@
-# これはサンプルの Python スクリプトです。
+"""
+One Dict 辞書のエントリファイル
+"""
 
-# ⌃R を押して実行するか、ご自身のコードに置き換えてください。
-# ⇧ を2回押す を押すと、クラス/ファイル/ツールウィンドウ/アクション/設定を検索します。
+from app import App
+from common import constants as cst
+from common.language import Language
 
-
-def print_hi(name):
-    # スクリプトをデバッグするには以下のコード行でブレークポイントを使用してください。
-    print(f'Hi, {name}')  # ⌘F8を押すとブレークポイントを切り替えます。
-
-
-# ガター内の緑色のボタンを押すとスクリプトを実行します。
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# PyCharm のヘルプは https://www.jetbrains.com/help/pycharm/ を参照してください
+if __name__ == cst.MAIN:
+    app = App(Language.get('appName'), cst.SETTING_WINDOW_SIZE)
+    app.mainloop()
