@@ -1,3 +1,6 @@
 {
-  "appName": "One Dict"
+  "appName": "One Dict",
+  "translate": "翻訳",
+  "clear": "クリア",
+  "history": "検索履歴"
 }

@@ -32,11 +32,45 @@ class App(tk.Frame):
             messagebox.showerror(cst.ERROR_MSG, str(e))
             self.master.destroy()
         else:
-            self.grid(column=0, row=0)
-            self.create_widgets()
+            # キーワード入力欄のリスト
+            # <英語>,<日本語>,<中国語>
+            self.keyword_txts = [tk.Text(self, width=32, height=10) for _ in
+                                 range(3)]
+            # 「翻訳」ボタン
+            self.translate_btn = tk.Button(
+                self, width=7, text=Language.get('translate'), command=None,
+                default="active")
+            # 「クリア」ボタン
+            self.clear_btn = tk.Button(
+                self, width=7, text=Language.get('clear'), command=None)
+            # 「検索履歴」ラベル
+            self.history_lbl = tk.Label(
+                self, width=20, text=Language.get('history'), anchor='w')
+            # 「検索履歴」コンテンツ
+            self.history_msg = tk.Message(
+                self, width=800, text="this\tthat\tinformation")
 
-    def create_widgets(self) -> None:
-        pass
+            self.put_widgets()
+
+    def put_widgets(self) -> None:
+        """
+        各種のウィジェットをウィンドウ内に配置する。
+
+        :return: None
+        """
+
+        self.grid(column=0, row=0)
+        # キーワード入力欄を配置する。
+        for idx, txt in enumerate(self.keyword_txts):
+            txt.grid(column=idx, row=0, rowspan=5)
+        # 「翻訳」ボタンを配置する。
+        self.translate_btn.grid(column=3, row=0)
+        # 「クリア」ボタンを配置する。
+        self.clear_btn.grid(column=3, row=1)
+        # 「検索履歴」ラベルを配置する。
+        self.history_lbl.grid(column=0, row=6)
+        # 「検索履歴」コンテンツを配置する。
+        self.history_msg.grid(column=0, row=7, columnspan=4)
 
     @staticmethod
     def __init_app() -> None:
@@ -71,5 +105,7 @@ class App(tk.Frame):
             # アプリ名称もウィンドウサイズも設定しない場合に、
             # ウィンドウ自体を非表示にする。
             master.withdraw()
+
+        master.resizable(False, False)
 
         return master
