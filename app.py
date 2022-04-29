@@ -1,5 +1,9 @@
 import tkinter as tk
+import urllib.request
+from urllib import parse
 from tkinter import messagebox
+
+import requests
 
 from common.language import Language
 from common import constants as cst
@@ -38,11 +42,12 @@ class App(tk.Frame):
                                  range(3)]
             # 「翻訳」ボタン
             self.translate_btn = tk.Button(
-                self, width=7, text=Language.get('translate'), command=None,
-                default="active")
+                self, width=7, text=Language.get('translate'),
+                command=self.__translate_handle, default="active")
             # 「クリア」ボタン
             self.clear_btn = tk.Button(
-                self, width=7, text=Language.get('clear'), command=None)
+                self, width=7, text=Language.get('clear'),
+                command=self.__clear_handle)
             # 「検索履歴」ラベル
             self.history_lbl = tk.Label(
                 self, width=20, text=Language.get('history'), anchor='w')
@@ -71,6 +76,26 @@ class App(tk.Frame):
         self.history_lbl.grid(column=0, row=6)
         # 「検索履歴」コンテンツを配置する。
         self.history_msg.grid(column=0, row=7, columnspan=4)
+
+    def __translate_handle(self):
+
+        # TODO: 別クラスに移動する。
+        url = 'https://translate.google.co.jp/_/TranslateWebserverUi/data/batchexecute'
+        headers = {'Content-Type': 'application/x-www-form-urlencoded'}
+        data = {'f.req': '[[["MkEWBc","[[\\"information\\",\\"auto\\",\\"ja\\",true],[null]]",null,"generic"]]]'}
+        data = urllib.parse.urlencode(data)
+        r = requests.post(url=url, headers=headers, data=data)
+        print(r.status_code)
+        print(r.text)
+        keyword = r.text
+
+        self.keyword_txts[1].delete('1.0', 'end')
+        self.keyword_txts[2].delete('1.0', 'end')
+        self.keyword_txts[1].insert('1.0', keyword)
+        self.keyword_txts[2].insert('1.0', keyword)
+
+    def __clear_handle(self):
+        pass
 
     @staticmethod
     def __init_app() -> None:
