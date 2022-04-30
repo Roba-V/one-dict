@@ -7,6 +7,7 @@ import requests
 
 from common.language import Language
 from common import constants as cst
+from spider import Spider
 
 
 class App(tk.Frame):
@@ -77,24 +78,33 @@ class App(tk.Frame):
         # 「検索履歴」コンテンツを配置する。
         self.history_msg.grid(column=0, row=7, columnspan=4)
 
-    def __translate_handle(self):
+    def __translate_handle(self) -> None:
+        """
+        翻訳するハンドラー
 
-        # TODO: 別クラスに移動する。
-        url = 'https://translate.google.co.jp/_/TranslateWebserverUi/data/batchexecute'
-        headers = {'Content-Type': 'application/x-www-form-urlencoded'}
-        data = {'f.req': '[[["MkEWBc","[[\\"information\\",\\"auto\\",\\"ja\\",true],[null]]",null,"generic"]]]'}
-        data = urllib.parse.urlencode(data)
-        r = requests.post(url=url, headers=headers, data=data)
-        print(r.status_code)
-        print(r.text)
-        keyword = r.text
+        :return: None
+        """
+
+        keyword = self.keyword_txts[0].get('1.0', 'end').strip()
+
+        spider_jp = Spider(keyword, 'ja')
+        rst_jp = spider_jp.translate()
+
+        spider_zh = Spider(keyword, 'zh')
+        rst_zh = spider_zh.translate()
 
         self.keyword_txts[1].delete('1.0', 'end')
         self.keyword_txts[2].delete('1.0', 'end')
-        self.keyword_txts[1].insert('1.0', keyword)
-        self.keyword_txts[2].insert('1.0', keyword)
+        self.keyword_txts[1].insert('1.0', rst_jp)
+        self.keyword_txts[2].insert('1.0', rst_zh)
 
-    def __clear_handle(self):
+    def __clear_handle(self) -> None:
+        """
+        入力欄をクリアするハンドラー
+
+        :return: None
+        """
+
         pass
 
     @staticmethod
