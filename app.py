@@ -1,9 +1,6 @@
 import tkinter as tk
-import urllib.request
-from urllib import parse
 from tkinter import messagebox
-
-import requests
+from concurrent.futures import ThreadPoolExecutor
 
 from common.language import Language
 from common import constants as cst
@@ -87,16 +84,15 @@ class App(tk.Frame):
 
         keyword = self.keyword_txts[0].get('1.0', 'end').strip()
 
-        spider_jp = Spider(keyword, 'ja')
-        rst_jp = spider_jp.translate()
-
-        spider_zh = Spider(keyword, 'zh')
-        rst_zh = spider_zh.translate()
+        # マルチスレッドでスパイダーの翻訳処理をさせる。
+        spiders = [Spider(keyword, lang) for lang in ['ja', 'zh']]
+        with ThreadPoolExecutor(max_workers=2) as executor:
+            future = [executor.submit(spider.translate) for spider in spiders]
 
         self.keyword_txts[1].delete('1.0', 'end')
         self.keyword_txts[2].delete('1.0', 'end')
-        self.keyword_txts[1].insert('1.0', rst_jp)
-        self.keyword_txts[2].insert('1.0', rst_zh)
+        self.keyword_txts[1].insert('1.0', future[0].result())
+        self.keyword_txts[2].insert('1.0', future[1].result())
 
     def __clear_handle(self) -> None:
         """
