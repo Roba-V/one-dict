@@ -1,3 +1,4 @@
+import re
 import urllib.parse
 
 import requests
@@ -13,6 +14,7 @@ class Spider:
         スパイダーの各種初期化処理を行う。
         """
 
+        self.keyword = keyword
         self.url = 'https://translate.google.co.jp/_/TranslateWebserverUi/' \
                    'data/batchexecute'
         self.header = {'Content-Type': 'application/x-www-form-urlencoded'}
@@ -29,6 +31,7 @@ class Spider:
         """
 
         response = requests.post(self.url, self.data, headers=self.header)
-        # TODO: 検索結果を抽出する。
+        m = re.search(rf'{self.keyword}' + r'[^\[]*\[{3}[^\[]*\[{2}\\"(.*?)\\"',
+                      response.text)
 
-        return response.text
+        return m.groups()[0]
