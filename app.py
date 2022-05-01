@@ -51,7 +51,9 @@ class App(tk.Frame):
                 self, width=20, text=Language.get('history'), anchor='w')
             # 「検索履歴」コンテンツ
             self.history_msg = tk.Message(
-                self, width=800, text="this\tthat\tinformation")
+                self, width=800,
+                text=cst.HISTORY_DISPLAY_SEPARATOR.join(self.__load_history())
+            )
 
             self.put_widgets()
 
@@ -95,6 +97,9 @@ class App(tk.Frame):
         self.keyword_txts[2].insert('1.0', future[1].result())
 
         self.__save_history(keyword)
+        self.history_msg['text'] = cst.HISTORY_DISPLAY_SEPARATOR.join(
+            self.__load_history()
+        )
 
     def __clear_handle(self) -> None:
         """
@@ -106,13 +111,27 @@ class App(tk.Frame):
         [txt.delete('1.0', 'end') for txt in self.keyword_txts]
 
     @staticmethod
+    def __load_history() -> list:
+        """
+        検索履歴ロードし、「\n」で配列に区切って返す。
+
+        :return: 検索履歴
+        """
+
+        # TODO: ファイル読み込みエラー処理を追加
+        with open(cst.HISTORY_FILE_NAME, 'r') as f:
+            return f.read().strip().split('\n')
+
+    @staticmethod
     def __save_history(word) -> None:
         """
+        検索した単語を検索履歴ファイルに書き込む。
 
-        :param word:
-        :return:
+        :param word:    検索した単語
+        :return:        None
         """
 
+        # TODO: ファイル書き出しエラー処理を追加
         with open(cst.HISTORY_FILE_NAME, 'a') as f:
             f.write(word + '\n')
 

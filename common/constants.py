@@ -9,6 +9,8 @@ SETTING_DEFAULT_LANG: str = 'ja'
 
 # 検索履歴保存用ファイル名
 HISTORY_FILE_NAME: str = '.history'
+# 検索履歴表示時のサパレーター符号
+HISTORY_DISPLAY_SEPARATOR:str = ', '
 
 # エントリファイル名称
 MAIN: str = '__main__'
