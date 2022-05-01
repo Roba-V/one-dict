@@ -101,7 +101,7 @@ class App(tk.Frame):
         :return: None
         """
 
-        pass
+        [txt.delete('1.0', 'end') for txt in self.keyword_txts]
 
     @staticmethod
     def __init_app() -> None:
