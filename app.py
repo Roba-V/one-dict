@@ -94,6 +94,8 @@ class App(tk.Frame):
         self.keyword_txts[1].insert('1.0', future[0].result())
         self.keyword_txts[2].insert('1.0', future[1].result())
 
+        self.__save_history(keyword)
+
     def __clear_handle(self) -> None:
         """
         入力欄をクリアするハンドラー
@@ -102,6 +104,17 @@ class App(tk.Frame):
         """
 
         [txt.delete('1.0', 'end') for txt in self.keyword_txts]
+
+    @staticmethod
+    def __save_history(word) -> None:
+        """
+
+        :param word:
+        :return:
+        """
+
+        with open(cst.HISTORY_FILE_NAME, 'a') as f:
+            f.write(word + '\n')
 
     @staticmethod
     def __init_app() -> None:

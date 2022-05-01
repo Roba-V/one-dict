@@ -7,6 +7,9 @@ SETTING_WINDOW_SIZE: str = '800x600'
 # デフォルト言語種別
 SETTING_DEFAULT_LANG: str = 'ja'
 
+# 検索履歴保存用ファイル名
+HISTORY_FILE_NAME: str = '.history'
+
 # エントリファイル名称
 MAIN: str = '__main__'
 
