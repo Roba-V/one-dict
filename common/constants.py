@@ -3,7 +3,7 @@
 """
 
 # ウィンドウサイズ（<横幅>x<高さ>）
-SETTING_WINDOW_SIZE: str = '800x600'
+SETTING_WINDOW_SIZE: str = '800x300'
 # デフォルト言語種別
 SETTING_DEFAULT_LANG: str = 'ja'
 
