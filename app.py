@@ -1,9 +1,10 @@
 import tkinter as tk
 from tkinter import messagebox
 from concurrent.futures import ThreadPoolExecutor
+from typing import List
 
-from common.language import Language
-from common import constants as cst
+from common import Language
+from common import FileIO, constants as cst
 from spider import Spider
 
 
@@ -26,14 +27,7 @@ class App(tk.Frame):
                                                Language.get('appName'))
 
             super().__init__(self.master)
-        except Exception as e:
-            # 例外が発生した場合、エラーメッセージを表示し、アプリを終了させる。
-            # 主に言語ロード失敗した場合に使われる。
-            self.master = self.__create_window()
-            super().__init__(self.master)
-            messagebox.showerror(cst.ERROR_MSG, str(e))
-            self.master.destroy()
-        else:
+
             # キーワード入力欄のリスト
             # <英語>,<日本語>,<中国語>
             self.keyword_txts = [tk.Text(self, width=32, height=10) for _ in
@@ -56,6 +50,13 @@ class App(tk.Frame):
             )
 
             self.put_widgets()
+        except Exception as e:
+            # 例外が発生した場合、エラーメッセージを表示し、アプリを終了させる。
+            # 主に言語ロード失敗した場合に使われる。
+            self.master = self.__create_window()
+            super().__init__(self.master)
+            messagebox.showerror(cst.ERROR_MSG, str(e))
+            self.master.destroy()
 
     def put_widgets(self) -> None:
         """
@@ -96,10 +97,13 @@ class App(tk.Frame):
         self.keyword_txts[1].insert('1.0', future[0].result())
         self.keyword_txts[2].insert('1.0', future[1].result())
 
-        self.__save_history(keyword)
-        self.history_msg['text'] = cst.HISTORY_DISPLAY_SEPARATOR.join(
-            self.__load_history()
-        )
+        try:
+            self.__save_history(keyword)
+            self.history_msg['text'] = cst.HISTORY_DISPLAY_SEPARATOR.join(
+                self.__load_history()
+            )
+        except Exception as e:
+            messagebox.showerror(cst.ERROR_MSG, str(e))
 
     def __clear_handle(self) -> None:
         """
@@ -111,16 +115,14 @@ class App(tk.Frame):
         [txt.delete('1.0', 'end') for txt in self.keyword_txts]
 
     @staticmethod
-    def __load_history() -> list:
+    def __load_history() -> List[str]:
         """
-        検索履歴ロードし、「\n」で配列に区切って返す。
+        検索履歴ロードする。
 
         :return: 検索履歴
         """
 
-        # TODO: ファイル読み込みエラー処理を追加
-        with open(cst.HISTORY_FILE_NAME, 'r') as f:
-            return f.read().strip().split('\n')
+        return FileIO.read_file_by_line(cst.HISTORY_FILE_NAME)
 
     @staticmethod
     def __save_history(word) -> None:
@@ -131,9 +133,7 @@ class App(tk.Frame):
         :return:        None
         """
 
-        # TODO: ファイル書き出しエラー処理を追加
-        with open(cst.HISTORY_FILE_NAME, 'a') as f:
-            f.write(word + '\n')
+        FileIO.write_file_by_line(cst.HISTORY_FILE_NAME, word)
 
     @staticmethod
     def __init_app() -> None:

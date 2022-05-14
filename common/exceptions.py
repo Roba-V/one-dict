@@ -9,3 +9,11 @@ class ODLanguageError(Exception):
     """
 
     pass
+
+
+class ODFileIOError(Exception):
+    """
+    ファイル IO エラー
+    """
+
+    pass
