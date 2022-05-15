@@ -1,3 +1,4 @@
+import os.path
 from typing import List
 
 from common.exceptions import ODFileIOError
@@ -19,6 +20,9 @@ class FileIO:
         """
 
         try:
+            if not os.path.exists(file_name):
+                with open(file_name, 'x'):
+                    pass
             with open(file_name, 'r') as f:
                 return f.read().strip().split('\n')
         except Exception:

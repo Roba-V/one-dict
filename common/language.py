@@ -1,5 +1,6 @@
 import json
 import os
+import os.path
 
 from common import constants as cst
 from common.exceptions import ODLanguageError
@@ -52,7 +53,10 @@ class Language:
         :return: None
         """
 
-        file_path = cst.LANG_JSON_FILE_PATH.format(os.getcwd(), cls.__lang)
+        # TODO: 開発のために、カレントディレクトリ配下をまず見るように
+        file_path = cst.LANG_JSON_FILE_PATH.format(
+            os.path.expanduser('~'), cls.__lang
+        )
         with open(file_path, 'r') as f:
             cls.__msg = json.loads(f.read())
 

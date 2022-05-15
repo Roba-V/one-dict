@@ -8,7 +8,7 @@ SETTING_WINDOW_SIZE: str = '800x300'
 SETTING_DEFAULT_LANG: str = 'ja'
 
 # 検索履歴保存用ファイル名
-HISTORY_FILE_NAME: str = '.history'
+HISTORY_FILE_PATH: str = '{}/.one-dict/.history'
 # 検索履歴表示時のサパレーター符号
 HISTORY_DISPLAY_SEPARATOR:str = ', '
 
@@ -19,7 +19,7 @@ MAIN: str = '__main__'
 ERROR_MSG: str = 'Error!'
 
 # 言語ファイルパス
-LANG_JSON_FILE_PATH: str = '{}/languages/{}.json'
+LANG_JSON_FILE_PATH: str = '{}/.one-dict/languages/{}.json'
 # 言語エラーメッセージ：ロード失敗
 LANG_LOAD_ERR_MSG: str = 'Unable to load language Resource!'
 # 言語エラーメッセージ：言語設定未実施

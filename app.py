@@ -1,3 +1,4 @@
+import os.path
 import tkinter as tk
 from tkinter import messagebox
 from concurrent.futures import ThreadPoolExecutor
@@ -122,7 +123,9 @@ class App(tk.Frame):
         :return: 検索履歴
         """
 
-        return FileIO.read_file_by_line(cst.HISTORY_FILE_NAME)
+        return FileIO.read_file_by_line(
+            cst.HISTORY_FILE_PATH.format(os.path.expanduser('~'))
+        )
 
     @staticmethod
     def __save_history(word) -> None:
@@ -133,7 +136,9 @@ class App(tk.Frame):
         :return:        None
         """
 
-        FileIO.write_file_by_line(cst.HISTORY_FILE_NAME, word)
+        FileIO.write_file_by_line(
+            cst.HISTORY_FILE_PATH.format(os.path.expanduser('~')), word
+        )
 
     @staticmethod
     def __init_app() -> None:
