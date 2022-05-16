@@ -1,8 +1,8 @@
 import os.path
 from typing import List
 
-from common.exceptions import ODFileIOError
 from common import Language
+from common.exceptions import ODFileIOError
 
 
 class FileIO:

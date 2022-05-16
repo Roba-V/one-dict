@@ -1,11 +1,10 @@
 import os.path
 import tkinter as tk
-from tkinter import messagebox
 from concurrent.futures import ThreadPoolExecutor
+from tkinter import messagebox
 from typing import List
 
-from common import Language
-from common import FileIO, constants as cst
+from common import FileIO, Language, constants as cst
 from spider import Spider
 
 
